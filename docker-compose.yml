@@ -1,0 +1,17 @@
+services:
+  producer:
+    image: producer:latest
+    build: ./producer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - consumer
+    volumes:
+      - ./output:/usr/src/app/output
+  consumer:
+    image: consumer:latest
+    build: ./consumer
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./output:/usr/src/app/output
