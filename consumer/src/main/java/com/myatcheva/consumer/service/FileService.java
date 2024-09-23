@@ -2,6 +2,7 @@ package com.myatcheva.consumer.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -17,7 +18,11 @@ public class FileService {
     private static final String PRIME_NUMBERS_FILE_EXTENSION = ".csv";
     private static final String PRIME_NUMBERS_FILE_SUFFIX = "-prime-numbers";
     private static final String DELIMITER = ",";
-    private static final String PRIME_NUMBERS_FOLDER = "output";
+    private String primeNumbersFolder;
+
+    public FileService(@Value("${primeNumbersFolder}") String primeNumbersFolder) {
+        this.primeNumbersFolder = primeNumbersFolder;
+    }
 
     public String savePrimeNumbersInFile(String fileId, List<Integer> primeNumbers) {
         String fileName = new StringBuilder()
@@ -25,11 +30,11 @@ public class FileService {
                 .append(PRIME_NUMBERS_FILE_SUFFIX)
                 .append(PRIME_NUMBERS_FILE_EXTENSION)
                 .toString();
-        File folder = new File(PRIME_NUMBERS_FOLDER);
+        File folder = new File(primeNumbersFolder);
         if (!folder.exists()) {
             folder.mkdir();
         }
-        try (FileWriter fileWriter = new FileWriter(new File(PRIME_NUMBERS_FOLDER, fileName))) {
+        try (FileWriter fileWriter = new FileWriter(new File(primeNumbersFolder, fileName))) {
             String content = primeNumbers.stream()
                     .map(String::valueOf)
                     .collect(Collectors.joining(DELIMITER));
