@@ -6,6 +6,13 @@ public class NumbersDto {
     private String id;
     private List<Integer> numbers;
 
+    public NumbersDto() {}
+
+    public NumbersDto(String id, List<Integer> numbers) {
+        this.id = id;
+        this.numbers = numbers;
+    }
+
     public String getId() {
         return id;
     }
